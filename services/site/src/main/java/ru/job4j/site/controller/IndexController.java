@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import static ru.job4j.site.controller.RequestResponseTools.getToken;
 
@@ -48,11 +49,11 @@ public class IndexController {
             log.error("Remote application not responding. Error: {}. {}, ", e.getCause(), e.getMessage());
         }
         List<InterviewDTO> interviewDTOS = interviewsService.getByType(1);
-        Set<ProfileDTO> profileDTOS = ConcurrentHashMap.newKeySet();
-        for (InterviewDTO interviewDTO: interviewDTOS) {
-            Optional<ProfileDTO> profileById = profilesService.getProfileById(interviewDTO.getSubmitterId());
-            profileById.ifPresent(profileDTOS::add);
-        }
+        Set<ProfileDTO> profileDTOS = interviewDTOS.stream()
+                .map(s -> profilesService.getProfileById(s.getSubmitterId()))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toSet());
         model.addAttribute("new_interviews", interviewDTOS);
         model.addAttribute("profiles", profileDTOS);
         return "index";
