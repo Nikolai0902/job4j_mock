@@ -48,6 +48,7 @@ public class IndexController {
         } catch (Exception e) {
             log.error("Remote application not responding. Error: {}. {}, ", e.getCause(), e.getMessage());
         }
+
         List<InterviewDTO> interviewDTOS = interviewsService.getByType(1);
         Set<ProfileDTO> profileDTOS = interviewDTOS.stream()
                 .map(s -> profilesService.getProfileById(s.getSubmitterId()))

@@ -51,7 +51,7 @@ class CategoryControlTest {
         when(authService.userInfo(token)).thenReturn(userInfo);
         mockMvc.perform(get("/category/createForm")
                         .sessionAttr("token", token))
-                
+
                 .andExpect(model().attribute("userInfo", userInfo))
                 .andExpect(model().attribute("breadcrumbs", breadcrumbs))
                 .andExpect(status().isOk())
@@ -61,12 +61,12 @@ class CategoryControlTest {
     @Test
     void whenPostCreateCategoryThenReturnRedirectView() throws Exception {
         var token = "1234";
-        var categoryDTO = new CategoryDTO(0, "name", 1, 1, 1);
+        var categoryDTO = new CategoryDTO(0, "name", 1, 1, 1, 1);
         when(categoriesService.create(token, categoryDTO)).thenReturn(categoryDTO);
         mockMvc.perform(post("/category/")
                         .requestAttr("category", categoryDTO)
                         .sessionAttr("token", token))
-                
+
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/categories/"));
     }
@@ -87,7 +87,7 @@ class CategoryControlTest {
         when(authService.userInfo(token)).thenReturn(userInfo);
         mockMvc.perform(get("/category/editForm/{id}/{name}", id, name)
                         .sessionAttr("token", token))
-                
+
                 .andExpect(model().attribute("category", new CategoryDTO(id, name)))
                 .andExpect(model().attribute("userInfo", userInfo))
                 .andExpect(model().attribute("breadcrumbs", breadcrumbs))
@@ -98,11 +98,11 @@ class CategoryControlTest {
     @Test
     void whenPostUpdateCategoryThenReturnRedirectCategories() throws Exception {
         var token = "1234";
-        var categoryDTO = new CategoryDTO(1, "name", 1, 1, 1);
+        var categoryDTO = new CategoryDTO(1, "name", 1, 1, 1, 1);
         mockMvc.perform(post("/category/update")
                         .sessionAttr("token", token)
                         .requestAttr("category", categoryDTO))
-                
+
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/categories/"));
     }
