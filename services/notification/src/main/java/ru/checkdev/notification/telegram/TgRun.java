@@ -7,9 +7,8 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
-import ru.checkdev.notification.telegram.action.Action;
-import ru.checkdev.notification.telegram.action.InfoAction;
-import ru.checkdev.notification.telegram.action.RegAction;
+import ru.checkdev.notification.service.TgService;
+import ru.checkdev.notification.telegram.action.*;
 import ru.checkdev.notification.telegram.service.TgAuthCallWebClint;
 
 import java.util.List;
@@ -28,6 +27,7 @@ import java.util.Map;
 @Slf4j
 public class TgRun {
     private final TgAuthCallWebClint tgAuthCallWebClint;
+    private final TgService tgService;
     @Value("${tg.username}")
     private String username;
     @Value("${tg.token}")
@@ -35,16 +35,20 @@ public class TgRun {
     @Value("${server.site.url.login}")
     private String urlSiteAuth;
 
-    public TgRun(TgAuthCallWebClint tgAuthCallWebClint) {
+    public TgRun(TgAuthCallWebClint tgAuthCallWebClint, TgService tgService) {
         this.tgAuthCallWebClint = tgAuthCallWebClint;
+        this.tgService = tgService;
     }
 
     @Bean
     public void initTg() {
         Map<String, Action> actionMap = Map.of(
                 "/start", new InfoAction(List.of(
-                        "/start", "/new")),
-                "/new", new RegAction(tgAuthCallWebClint, urlSiteAuth)
+                        "/start", "/new", "/check", "/bind", "/unbind")),
+                "/new", new RegAction(tgAuthCallWebClint, urlSiteAuth, tgService),
+                "/check", new CheckAction(tgService),
+                "/bind", new BindAction(tgAuthCallWebClint, tgService),
+                "/unbind", new UnbindAction(tgAuthCallWebClint, tgService)
         );
         try {
             BotMenu menu = new BotMenu(actionMap, username, token);

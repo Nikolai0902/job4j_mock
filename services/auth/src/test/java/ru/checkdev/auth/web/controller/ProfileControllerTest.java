@@ -56,7 +56,7 @@ public class ProfileControllerTest {
         mockMvc.perform(get("/profiles/{id}", profileDTO1.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(profileDTO1.getId()))
-                .andExpect(jsonPath("$.username").value(profileDTO1.getUsername()))
+                .andExpect(jsonPath("$.username").value(profileDTO1.getUserName()))
                 .andExpect(jsonPath("$.experience").value(profileDTO1.getExperience()))
                 .andExpect(jsonPath("$.photoId").value(profileDTO1.getPhotoId()));
     }

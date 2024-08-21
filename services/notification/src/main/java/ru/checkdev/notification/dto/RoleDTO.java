@@ -1,4 +1,4 @@
-package ru.checkdev.notification.domain;
+package ru.checkdev.notification.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

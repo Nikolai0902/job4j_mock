@@ -1,7 +1,7 @@
 package ru.checkdev.notification.telegram.config;
 
 import org.junit.jupiter.api.Test;
-import ru.checkdev.notification.domain.PersonDTO;
+import ru.checkdev.notification.dto.PersonDTO;
 
 import java.util.Calendar;
 
