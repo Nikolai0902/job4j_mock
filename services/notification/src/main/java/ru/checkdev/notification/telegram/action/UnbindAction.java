@@ -15,7 +15,7 @@ import java.util.Arrays;
 
 /**
  * 3. Мидл
- * Класс реализует вывод воод логин и пароль,
+ * Класс реализует ввод воод логин и пароль,
  * чтобы отвязать аккаунт telegram к платформу CheckDev.
  *
  * @author Buslaev
@@ -24,7 +24,7 @@ import java.util.Arrays;
 @Slf4j
 public class UnbindAction implements Action {
     private static final String FIND_PERSON_EMAIL_PASS = "/person/check?email=%s&password=%s";
-    private final TgConfig tgConfig = new TgConfig("tg/", 8);
+    private final TgConfig tgConfig;
     private final TgAuthCallWebClint authCallWebClint;
     private final TgService tgService;
 
@@ -46,12 +46,17 @@ public class UnbindAction implements Action {
 
     @Override
     public BotApiMethod<Message> callback(Message message) {
-        var chatId = message.getChatId().toString();
-        var loginAndPass = Arrays.stream(message.getText().split(" ")).toList();
-        var login = loginAndPass.get(0);
-        var password = loginAndPass.get(1);
         var text = "";
         var sl = System.lineSeparator();
+        var chatId = message.getChatId().toString();
+
+        var loginAndPass = tgConfig.parseMessageLoginAndPassword(message);
+        if (loginAndPass.isEmpty()) {
+            text = "Данные некорректны.";
+            return new SendMessage(chatId, text);
+        }
+        var login = loginAndPass.get("login");
+        var password = loginAndPass.get("password");
 
         if (!tgConfig.isEmail(login)) {
             text = "Login: " + login + " не корректный." + sl

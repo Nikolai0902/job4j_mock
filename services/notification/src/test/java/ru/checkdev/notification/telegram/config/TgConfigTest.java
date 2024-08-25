@@ -14,8 +14,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @since 06.10.2023
  */
 class TgConfigTest {
-    private final String prefix = "pr/";
-    private final int passSize = 10;
+    private final String prefix = "tg/";
+    private final int passSize = 8;
     private final TgConfig tgConfig = new TgConfig(prefix, passSize);
 
     @Test

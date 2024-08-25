@@ -9,6 +9,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import ru.checkdev.notification.service.TgService;
 import ru.checkdev.notification.telegram.action.*;
+import ru.checkdev.notification.telegram.config.TgConfig;
 import ru.checkdev.notification.telegram.service.TgAuthCallWebClint;
 
 import java.util.List;
@@ -28,6 +29,7 @@ import java.util.Map;
 public class TgRun {
     private final TgAuthCallWebClint tgAuthCallWebClint;
     private final TgService tgService;
+    private final TgConfig tgConfig;
     @Value("${tg.username}")
     private String username;
     @Value("${tg.token}")
@@ -35,9 +37,10 @@ public class TgRun {
     @Value("${server.site.url.login}")
     private String urlSiteAuth;
 
-    public TgRun(TgAuthCallWebClint tgAuthCallWebClint, TgService tgService) {
+    public TgRun(TgAuthCallWebClint tgAuthCallWebClint, TgService tgService, TgConfig tgConfig) {
         this.tgAuthCallWebClint = tgAuthCallWebClint;
         this.tgService = tgService;
+        this.tgConfig = tgConfig;
     }
 
     @Bean
@@ -45,10 +48,10 @@ public class TgRun {
         Map<String, Action> actionMap = Map.of(
                 "/start", new InfoAction(List.of(
                         "/start", "/new", "/check", "/bind", "/unbind")),
-                "/new", new RegAction(tgAuthCallWebClint, urlSiteAuth, tgService),
+                "/new", new RegAction(tgConfig, tgAuthCallWebClint, urlSiteAuth, tgService),
                 "/check", new CheckAction(tgService),
-                "/bind", new BindAction(tgAuthCallWebClint, tgService),
-                "/unbind", new UnbindAction(tgAuthCallWebClint, tgService)
+                "/bind", new BindAction(tgConfig, tgAuthCallWebClint, tgService),
+                "/unbind", new UnbindAction(tgConfig, tgAuthCallWebClint, tgService)
         );
         try {
             BotMenu menu = new BotMenu(actionMap, username, token);

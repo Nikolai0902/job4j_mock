@@ -11,7 +11,6 @@ import ru.checkdev.notification.service.TgService;
 import ru.checkdev.notification.telegram.config.TgConfig;
 import ru.checkdev.notification.telegram.service.TgAuthCallWebClint;
 
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Optional;
 
@@ -27,7 +26,7 @@ import java.util.Optional;
 public class RegAction implements Action {
     private static final String ERROR_OBJECT = "error";
     private static final String URL_AUTH_REGISTRATION = "/registration";
-    private final TgConfig tgConfig = new TgConfig("tg/", 8);
+    private final TgConfig tgConfig;
     private final TgAuthCallWebClint authCallWebClint;
     private final String urlSiteAuth;
     private final TgService tgService;
@@ -57,12 +56,17 @@ public class RegAction implements Action {
      */
     @Override
     public BotApiMethod<Message> callback(Message message) {
-        var chatId = message.getChatId().toString();
-        var fioAndEmail = Arrays.stream(message.getText().split(" ")).toList();
-        var fio = fioAndEmail.get(0);
-        var email = fioAndEmail.get(1);
         var text = "";
         var sl = System.lineSeparator();
+        var chatId = message.getChatId().toString();
+        var fioAndEmail = tgConfig.parseMessageFioAndEmail(message);
+
+        if (fioAndEmail.isEmpty()) {
+            text = "Данные некорректны.";
+            return new SendMessage(chatId, text);
+        }
+        var fio = fioAndEmail.get("fio");
+        var email = fioAndEmail.get("email");
 
         if (!tgConfig.isEmail(email)) {
             text = "Email: " + email + " не корректный." + sl
