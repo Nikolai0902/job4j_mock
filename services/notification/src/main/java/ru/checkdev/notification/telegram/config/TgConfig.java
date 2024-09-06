@@ -1,7 +1,10 @@
 package ru.checkdev.notification.telegram.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import org.telegram.telegrambots.meta.api.objects.Message;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -21,8 +24,8 @@ public class TgConfig {
     private final int passSize;
 
     public TgConfig(String prefix, int passSize) {
-        this.prefix = prefix;
-        this.passSize = passSize;
+        this.prefix = "tg/";
+        this.passSize = 8;
     }
 
     /**
@@ -53,6 +56,52 @@ public class TgConfig {
      * @return Map
      */
     public Map<String, String> getObjectToMap(Object object) {
+        MAPPER.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         return MAPPER.convertValue(object, Map.class);
+    }
+
+    /**
+     * Метод преобразовывает Message в карту Map<String,String>
+     * с FIO и email.
+     *
+     */
+    public Map<String, String> parseMessageFioAndEmail(Message message) {
+        Map<String, String> result = checkFormat(message.getText());
+        if (!result.isEmpty()) {
+            result.put("fio", result.get("first"));
+            result.put("email", result.get("second"));
+        }
+        return result;
+    }
+
+    /**
+     * Метод преобразовывает Message в карту Map<String,String>
+     * с login и password.
+     *
+     */
+    public Map<String, String> parseMessageLoginAndPassword(Message message) {
+        Map<String, String> result = checkFormat(message.getText());
+        if (!result.isEmpty()) {
+            result.put("login", result.get("first"));
+            result.put("password", result.get("second"));
+        }
+        return result;
+    }
+
+    /**
+     * Проверка правильности введенных данных согласно формату.
+     */
+    private Map<String, String> checkFormat(String data) {
+        Map<String, String> result = new HashMap<>();
+        int index = data.indexOf(" ");
+        if (index != -1 && index != 0 && index != data.length() - 1) {
+            String first = data.substring(0, index);
+            String second = data.substring(index + 1);
+            if (!first.contains(" ") && !second.contains(" ")) {
+                result.put("first", first);
+                result.put("second", second);
+            }
+        }
+        return result;
     }
 }

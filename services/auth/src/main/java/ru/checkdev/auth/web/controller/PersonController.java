@@ -147,4 +147,10 @@ public class PersonController {
         map.put("getTotal", persons.showed());
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
+
+    @GetMapping("/check")
+    public Profile check(@RequestParam String email, String password) {
+        Optional<Profile> result = this.persons.findByEmailAndPassword(email, password);
+        return result.orElseGet(Profile::new);
+    }
 }

@@ -4,6 +4,7 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -34,6 +35,15 @@ public class InfoAction implements Action {
 
     @Override
     public BotApiMethod<Message> callback(Message message) {
+        var chatId = message.getChatId().toString();
+        var command = message.getText();
+        var sl = System.lineSeparator();
+        if (!actions.contains(command)) {
+            return new SendMessage(chatId,
+                    "Команда не поддерживается!" + sl
+                            + "Список доступных команд: /start"
+            );
+        }
         return handle(message);
     }
 }

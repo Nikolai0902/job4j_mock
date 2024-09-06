@@ -21,7 +21,7 @@ import java.util.Calendar;
 public class ProfileDTO {
     @EqualsAndHashCode.Include
     private Integer id;
-    private String username;
+    private String userName;
     private String experience;
     private Integer photoId;
     /**

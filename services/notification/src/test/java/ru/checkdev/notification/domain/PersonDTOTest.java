@@ -2,6 +2,8 @@ package ru.checkdev.notification.domain;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.checkdev.notification.dto.PersonDTO;
+import ru.checkdev.notification.dto.RoleDTO;
 
 import java.util.ArrayList;
 import java.util.Calendar;

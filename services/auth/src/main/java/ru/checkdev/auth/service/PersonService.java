@@ -310,4 +310,15 @@ public class PersonService {
         emptyNames.addAll(Arrays.asList(extra));
         return emptyNames;
     }
+
+    public Optional<Profile> findByEmailAndPassword(String email, String password) {
+        Optional<Profile> result = Optional.empty();
+        Profile inDb = this.persons.findByEmail(email);
+        if (inDb != null) {
+            if (encoding.matches(password, inDb.getPassword())) {
+                result = Optional.of(inDb);
+            }
+        }
+        return result;
+    }
 }

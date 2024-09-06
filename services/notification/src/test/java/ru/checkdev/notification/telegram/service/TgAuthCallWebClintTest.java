@@ -7,7 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-import ru.checkdev.notification.domain.PersonDTO;
+import ru.checkdev.notification.dto.PersonDTO;
 
 import java.util.Calendar;
 import java.util.Collections;

@@ -6,12 +6,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import ru.job4j.site.service.AuthService;
-import ru.job4j.site.service.CategoriesService;
-import ru.job4j.site.service.InterviewsService;
-import ru.job4j.site.service.NotificationService;
+import ru.job4j.site.dto.InterviewDTO;
+import ru.job4j.site.dto.ProfileDTO;
+import ru.job4j.site.service.*;
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import static ru.job4j.site.controller.RequestResponseTools.getToken;
 
@@ -20,6 +26,7 @@ import static ru.job4j.site.controller.RequestResponseTools.getToken;
 @Slf4j
 public class IndexController {
     private final CategoriesService categoriesService;
+    private final ProfilesService profilesService;
     private final InterviewsService interviewsService;
     private final AuthService authService;
     private final NotificationService notifications;
@@ -41,7 +48,15 @@ public class IndexController {
         } catch (Exception e) {
             log.error("Remote application not responding. Error: {}. {}, ", e.getCause(), e.getMessage());
         }
-        model.addAttribute("new_interviews", interviewsService.getByType(1));
+
+        List<InterviewDTO> interviewDTOS = interviewsService.getByType(1);
+        Set<ProfileDTO> profileDTOS = interviewDTOS.stream()
+                .map(s -> profilesService.getProfileById(s.getSubmitterId()))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toSet());
+        model.addAttribute("new_interviews", interviewDTOS);
+        model.addAttribute("profiles", profileDTOS);
         return "index";
     }
 }
