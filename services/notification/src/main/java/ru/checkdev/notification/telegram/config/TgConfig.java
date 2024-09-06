@@ -24,6 +24,11 @@ public class TgConfig {
     private final int passSize;
 
     public TgConfig(String prefix, int passSize) {
+        this.prefix = prefix;
+        this.passSize = passSize;
+    }
+
+    public TgConfig() {
         this.prefix = "tg/";
         this.passSize = 8;
     }

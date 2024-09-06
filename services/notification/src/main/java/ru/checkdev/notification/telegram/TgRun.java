@@ -29,7 +29,7 @@ import java.util.Map;
 public class TgRun {
     private final TgAuthCallWebClint tgAuthCallWebClint;
     private final TgService tgService;
-    private final TgConfig tgConfig;
+    private final TgConfig tgConfig = new TgConfig();
     @Value("${tg.username}")
     private String username;
     @Value("${tg.token}")
@@ -37,10 +37,9 @@ public class TgRun {
     @Value("${server.site.url.login}")
     private String urlSiteAuth;
 
-    public TgRun(TgAuthCallWebClint tgAuthCallWebClint, TgService tgService, TgConfig tgConfig) {
+    public TgRun(TgAuthCallWebClint tgAuthCallWebClint, TgService tgService) {
         this.tgAuthCallWebClint = tgAuthCallWebClint;
         this.tgService = tgService;
-        this.tgConfig = tgConfig;
     }
 
     @Bean
