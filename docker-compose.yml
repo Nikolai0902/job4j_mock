@@ -19,7 +19,6 @@ services:
     ports:
       - "9900:9900"
     environment:
-      - SECURITY_OAUTH2_RESOURCE_USERINFOURI=http://auth:9000/user
       - SPRING_DATASOURCE_URL=jdbc:postgresql://auth_db:5432/cd_auth
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=password
