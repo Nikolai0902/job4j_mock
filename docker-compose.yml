@@ -18,7 +18,7 @@ services:
       context: ./services/auth
       dockerfile: Dockerfile
     ports:
-      - "9900:9900"
+      - "127.0.0.1:9900:9900"
     environment:
       - SECURITY_OAUTH2_RESOURCE_USERINFOURI=http://auth:9000/user
       - SPRING_DATASOURCE_URL=jdbc:postgresql://auth_db:5432/cd_auth
@@ -45,7 +45,7 @@ services:
       context: ./services/desc
       dockerfile: Dockerfile
     ports:
-      - "9902:9902"
+      - "127.0.0.1:9902:9902"
     environment:
       - SECURITY_OAUTH2_RESOURCE_USERINFOURI=http://auth:9000/user
       - SPRING_DATASOURCE_URL=jdbc:postgresql://desc_db:5432/cd_desc
@@ -72,7 +72,7 @@ services:
       context: ./services/mock
       dockerfile: Dockerfile
     ports:
-      - "9912:9912"
+      - "127.0.0.1:9912:9912"
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://mock_db:5432/mock
       - SPRING_DATASOURCE_USERNAME=postgres
@@ -99,7 +99,7 @@ services:
       context: ./services/notification
       dockerfile: Dockerfile
     ports:
-      - "9920:9920"
+      - "127.0.0.1:9920:9920"
     environment:
       - SECURITY_OAUTH2_RESOURCE_USERINFOURI=http://auth:9000/user
       - SPRING_DATASOURCE_URL=jdbc:postgresql://notification_db:5432/cd_notification
@@ -117,7 +117,7 @@ services:
       context: ./services/site
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - "127.0.0.1:8080:8080"
     environment:
       - SECURITY_OAUTH2_RESOURCE_USERINFOURI=http://auth:9000/user
       - SECURITY_OAUTH2_TOKENURI=http://auth:9900/oauth/token

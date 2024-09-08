@@ -202,4 +202,27 @@ Smoke-тесты:
 - Mock сервис - http://localhost:9912/swagger-ui/index.html
 - Notification сервис - http://localhost:9920/swagger-ui/index.html
 
+#### Запуск приложения через Docker Compose.
+
+Для запуска приложения с использованием Docker Compose выполните следующие:
+
+- Склонируйте проект командой:
+  ```
+  git clone https://github.com/...
+   ```
+- Установите Docker compose и в корне проекта создайте файл docker-compose.yml.
+  Выполните создание образов проекта:
+  ```
+  docker-compose build
+  ```
+- Поднимите образы приложения.
+  Эта команда соберёт и запустит контейнеры, указанные в docker-compose.yml. 
+  Приложение будет доступно на порту 8080.
+  ```
+  docker-compose up
+  ```
+- Для остановки и удаления контейнеров: docker-compose down
+  ```
+  docker-compose down
+  ```
 ___
