@@ -27,7 +27,8 @@ public class InterviewsControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
+    @MockBean
+    private NotificationService notificationService;
     @MockBean
     private InterviewsService interviewsService;
     @MockBean

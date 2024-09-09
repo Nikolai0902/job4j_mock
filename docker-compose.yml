@@ -10,7 +10,7 @@ services:
       - POSTGRES_DB=cd_auth
       - PGDATA=/var/lib/postgresql/auth_data
     volumes:
-      - ./db/shortcut/auth_data:/var/lib/postgresql/auth_data
+      - ./db/auth_data:/var/lib/postgresql/auth_data
     restart: always
   auth:
     container_name: auth
@@ -18,9 +18,8 @@ services:
       context: ./services/auth
       dockerfile: Dockerfile
     ports:
-      - "127.0.0.1:9900:9900"
+      - "9900:9900"
     environment:
-      - SECURITY_OAUTH2_RESOURCE_USERINFOURI=http://auth:9000/user
       - SPRING_DATASOURCE_URL=jdbc:postgresql://auth_db:5432/cd_auth
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=password
@@ -37,7 +36,7 @@ services:
       - POSTGRES_DB=cd_desc
       - PGDATA=/var/lib/postgresql/desc_data
     volumes:
-      - ./db/shortcut/desc_data:/var/lib/postgresql/desc_data
+      - ./db/desc_data:/var/lib/postgresql/desc_data
     restart: always
   desc:
     container_name: desc
@@ -45,9 +44,8 @@ services:
       context: ./services/desc
       dockerfile: Dockerfile
     ports:
-      - "127.0.0.1:9902:9902"
+      - "9902:9902"
     environment:
-      - SECURITY_OAUTH2_RESOURCE_USERINFOURI=http://auth:9000/user
       - SPRING_DATASOURCE_URL=jdbc:postgresql://desc_db:5432/cd_desc
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=password
@@ -64,7 +62,7 @@ services:
       - POSTGRES_DB=mock
       - PGDATA=/var/lib/postgresql/mock_data
     volumes:
-      - ./db/shortcut/mock_data:/var/lib/postgresql/mock_data
+      - ./db/mock_data:/var/lib/postgresql/mock_data
     restart: always
   mock:
     container_name: mock
@@ -72,7 +70,7 @@ services:
       context: ./services/mock
       dockerfile: Dockerfile
     ports:
-      - "127.0.0.1:9912:9912"
+      - "9912:9912"
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://mock_db:5432/mock
       - SPRING_DATASOURCE_USERNAME=postgres
@@ -91,7 +89,7 @@ services:
       - POSTGRES_DB=cd_notification
       - PGDATA=/var/lib/postgresql/notification_data
     volumes:
-      - ./db/shortcut/notification_data:/var/lib/postgresql/notification_data
+      - ./db/notification_data:/var/lib/postgresql/notification_data
     restart: always
   notification:
     container_name: notification
@@ -99,9 +97,8 @@ services:
       context: ./services/notification
       dockerfile: Dockerfile
     ports:
-      - "127.0.0.1:9920:9920"
+      - "9920:9920"
     environment:
-      - SECURITY_OAUTH2_RESOURCE_USERINFOURI=http://auth:9000/user
       - SPRING_DATASOURCE_URL=jdbc:postgresql://notification_db:5432/cd_notification
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=password
@@ -117,14 +114,15 @@ services:
       context: ./services/site
       dockerfile: Dockerfile
     ports:
-      - "127.0.0.1:8080:8080"
+      - "8080:8080"
     environment:
       - SECURITY_OAUTH2_RESOURCE_USERINFOURI=http://auth:9000/user
       - SECURITY_OAUTH2_TOKENURI=http://auth:9900/oauth/token
       - SERVER_AUTH=http://auth:9900
       - SERVER_AUTH_PING=http://auth:9900/ping
       - SERVICE_MOCK=http://mock:9912
-      - SERVER_SITE_URL=http://site:8080/
+      - SERVICE_DESC=http://desc:9902
+      - SERVER_NOTIFICATION=http://notification:9920
     depends_on:
       - auth
       - desc

@@ -12,6 +12,10 @@ import ru.job4j.site.SiteSrv;
 import ru.job4j.site.domain.Breadcrumb;
 import ru.job4j.site.dto.CredentialDTO;
 import ru.job4j.site.service.AuthService;
+import ru.job4j.site.service.CategoriesService;
+import ru.job4j.site.service.NotificationService;
+import ru.job4j.site.service.TopicsService;
+
 import java.util.List;
 import java.util.Map;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -34,7 +38,13 @@ class LoginControlTest {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
+    private NotificationService notificationService;
+    @MockBean
+    private TopicsService topicsService;
+    @MockBean
     private AuthService authService;
+    @MockBean
+    private CategoriesService categoriesService;
 
     private LoginControl loginControl;
 

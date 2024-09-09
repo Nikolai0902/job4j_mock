@@ -10,8 +10,7 @@ import ru.job4j.site.SiteSrv;
 import ru.job4j.site.domain.Breadcrumb;
 import ru.job4j.site.dto.CategoryDTO;
 import ru.job4j.site.dto.UserInfoDTO;
-import ru.job4j.site.service.AuthService;
-import ru.job4j.site.service.CategoriesService;
+import ru.job4j.site.service.*;
 
 import java.util.List;
 
@@ -33,6 +32,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class CategoryControlTest {
     @Autowired
     private MockMvc mockMvc;
+    @MockBean
+    private TopicsService topicsService;
+    @MockBean
+    private InterviewService interviewService;
+    @MockBean
+    private NotificationService notificationService;
     @MockBean
     private CategoriesService categoriesService;
     @MockBean

@@ -10,6 +10,7 @@ import ru.job4j.site.SiteSrv;
 import ru.job4j.site.domain.Breadcrumb;
 import ru.job4j.site.dto.*;
 import ru.job4j.site.service.AuthService;
+import ru.job4j.site.service.CategoriesService;
 import ru.job4j.site.service.NotificationService;
 import ru.job4j.site.service.TopicsService;
 
@@ -33,6 +34,8 @@ public class TopicControlTest {
     private TopicsService topicsService;
     @MockBean
     private AuthService authService;
+    @MockBean
+    private CategoriesService categoriesService;
 
     @MockBean
     private NotificationService notifications;

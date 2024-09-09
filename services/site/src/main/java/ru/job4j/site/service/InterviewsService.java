@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import ru.job4j.site.dto.InterviewDTO;
@@ -15,10 +16,15 @@ import java.util.List;
 @Service
 public class InterviewsService {
 
+    private final String urlMock;
+
+    public InterviewsService(@Value("${service.mock}") String urlMock) {
+        this.urlMock = urlMock;
+    }
+
     public Page<InterviewDTO> getAll(String token, int page, int size)
             throws JsonProcessingException {
-        var text = new RestAuthCall(String
-                .format("http://localhost:9912/interviews/?page=%d&?size=%d", page, size))
+        var text = new RestAuthCall(urlMock + "/interviews/?page=" + page + "&?size=" + size)
                 .get(token);
         var mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -28,7 +34,7 @@ public class InterviewsService {
     }
 
     public List<InterviewDTO> getByType(int type) throws JsonProcessingException {
-        var text = new RestAuthCall(String.format("http://localhost:9912/interviews/%d", type))
+        var text = new RestAuthCall(urlMock + "/interviews/" + type)
                 .get();
         var mapper = new ObjectMapper();
         return mapper.readValue(text, new TypeReference<>() {
@@ -38,9 +44,8 @@ public class InterviewsService {
     public Page<InterviewDTO> getByTopicId(int topicId, int page, int size)
             throws JsonProcessingException {
         var text =
-                new RestAuthCall(String
-                        .format("http://localhost:9912/interviews/findByTopicId/%d?page=%d&?size=%d",
-                                topicId, page, size)).get();
+                new RestAuthCall(urlMock + "/interviews/findByTopicId/" + topicId + "?page=" + page + "&?size="
+                                + size).get();
         var mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         var pageType = mapper.getTypeFactory()
@@ -53,9 +58,10 @@ public class InterviewsService {
         var tids = parseIdsListToString(topicIds);
         var mapper = new ObjectMapper();
         var text =
-                new RestAuthCall(String
-                        .format("http://localhost:9912/interviews/findByTopicsIds/%s?page=%d&?size=%d",
-                                tids, page, size)).get();
+                new RestAuthCall(
+                        urlMock + "/interviews/findByTopicsIds/"
+                                + tids + "?page=" + page
+                                + "&?size=" + size).get();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         var pageType = mapper.getTypeFactory()
                 .constructParametricType(RestPageImpl.class, InterviewDTO.class);

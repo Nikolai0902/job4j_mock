@@ -7,7 +7,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.job4j.site.dto.ProfileDTO;
+import ru.job4j.site.service.CategoriesService;
+import ru.job4j.site.service.NotificationService;
 import ru.job4j.site.service.ProfilesService;
+import ru.job4j.site.service.TopicsService;
 
 import java.util.Calendar;
 import java.util.List;
@@ -30,7 +33,13 @@ class ProfilesControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
+    private NotificationService notificationService;
+    @MockBean
+    private TopicsService topicsService;
+    @MockBean
     private ProfilesService profilesService;
+    @MockBean
+    private CategoriesService categoriesService;
 
     @Test
     void whenGetProfileByIdThenReturnPageProfileView() throws Exception {

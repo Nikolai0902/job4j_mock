@@ -11,10 +11,7 @@ import ru.job4j.site.SiteSrv;
 import ru.job4j.site.domain.Breadcrumb;
 import ru.job4j.site.domain.StatusInterview;
 import ru.job4j.site.dto.*;
-import ru.job4j.site.service.AuthService;
-import ru.job4j.site.service.InterviewService;
-import ru.job4j.site.service.TopicsService;
-import ru.job4j.site.service.WisherService;
+import ru.job4j.site.service.*;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,6 +33,8 @@ public class InterviewControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
+    private NotificationService notificationService;
+    @MockBean
     private InterviewService interviewService;
     @MockBean
     private TopicsService topicsService;
@@ -43,6 +42,8 @@ public class InterviewControllerTest {
     private AuthService authService;
     @MockBean
     private WisherService wisherService;
+    @MockBean
+    private CategoriesService categoriesService;
 
     @Test
     public void whenShowDetails() throws Exception {
