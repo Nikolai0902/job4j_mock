@@ -219,7 +219,7 @@ Smoke-тесты:
   Эта команда соберёт и запустит контейнеры, указанные в docker-compose.yml. 
   Приложение будет доступно на порту 8080.
   ```
-  docker-compose up
+  docker-compose up -d
   ```
 - Для остановки и удаления контейнеров: docker-compose down
   ```
